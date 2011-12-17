@@ -8,9 +8,9 @@
     "url": "http://www.fknsrs.biz/"
   },
   "url": "https://github.com/deoxxa/dusty",
-  "license" : "BSD",
-  "repository" : { "type":"git", "url":"git://github.com/deoxxa/dusty" },
-  "keywords" : [
+  "license": "BSD",
+  "repository": { "type":"git", "url":"git://github.com/deoxxa/dusty" },
+  "keywords": [
     "dust",
     "template",
     "compile"
@@ -23,14 +23,14 @@
     "underscore": "1.2.x"
   },
   "engines": {
-    "node" : ">=0.4.12"
+    "node": ">=0.4.12"
   },
   "directories": {
     "lib": "./lib",
     "bin": "./bin"
   },
   "bin": {
-    "dusty": "./bin/dusty",
+    "dusty": "./bin/dusty"
   },
   "preferGlobal": true
 }
