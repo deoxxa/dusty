@@ -1,7 +1,7 @@
 {
   "name": "dusty",
   "description": "Compile a collection of dust.js templates",
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "author": {
     "name": "Conrad Pankoff",
     "email": "deoxxa@fknsrs.biz",
