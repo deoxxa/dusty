@@ -1,16 +1,16 @@
 {
   "name": "dusty",
   "description": "Compile a collection of dust.js templates",
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "author": {
     "name": "Conrad Pankoff",
     "email": "deoxxa@fknsrs.biz",
     "url": "http://www.fknsrs.biz/"
   },
   "url": "https://github.com/deoxxa/dusty",
-  "license" : "BSD",
-  "repository" : { "type":"git", "url":"git://github.com/deoxxa/dusty" },
-  "keywords" : [
+  "license": "BSD",
+  "repository": { "type":"git", "url":"git://github.com/deoxxa/dusty" },
+  "keywords": [
     "dust",
     "template",
     "compile"
@@ -23,14 +23,14 @@
     "underscore": "1.2.x"
   },
   "engines": {
-    "node" : ">=0.4.12"
+    "node": ">=0.4.12"
   },
   "directories": {
     "lib": "./lib",
     "bin": "./bin"
   },
   "bin": {
-    "dusty": "./bin/dusty",
+    "dusty": "./bin/dusty"
   },
   "preferGlobal": true
 }
