@@ -2,23 +2,25 @@
 
 var argv = require("optimist")
     .options({
-      "s": {
-        alias: "single",
-        description: "Output the compiled templates as a single file",
-        default: false
+      "m": {
+        alias: "multiple",
+        description: "Output each template into its own file",
       },
       "o": {
         alias: "out",
-        description: "Where to write the compiled template file(s) to.",
-      }
+        description: "Where to write the compiled template file(s) to",
+      },
+      "r": {
+        alias: "requirify",
+        description: "Add `var dust = require(\"dust\");' to output",
+      },
     })
-    .demand(["o"])
     .argv;
 
 var _ = require("underscore"),
     async = require("async"),
     fs = require("fs"),
-    Dusty = require("./lib/dusty");
+    Dusty = require("../lib/dusty");
 
 async.map(argv._, function(location, cb) {
   var dusty = new Dusty(argv._[0]);
@@ -27,23 +29,43 @@ async.map(argv._, function(location, cb) {
   var templates = {};
   _.extend.apply(_, [templates].concat(res));
 
-  if (argv.single) {
+  if (argv.requirify) {
+    _.each(templates, function(data, name) {
+      // eep!
+      templates[name] = data.replace(/^\(function\(\)\{/, "(function(){var dust=require(\"dust\");");
+    });
+  }
+
+  // If there's no output target, dump to stdout
+  if (!argv.out) {
+    console.log(_.toArray(templates).join("\n"));
+
+    return;
+  }
+
+  // Or if there's no multiple flag, dump to a single file
+  if (!argv.multiple) {
     console.warn("[+] Writing " + argv.out);
+
     fs.writeFile(argv.out, _.toArray(templates).join("\n"), function(err) {
+      if (err) {
+        console.warn(err);
+      }
+    });
+
+    return;
+  }
+
+  // Otherwise, we're writing to multiple files in what is hopefully a directory
+  _.each(templates, function(js, name) {
+    console.warn("[+] Writing " + argv.out + "/" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".js");
+
+    // friendlierish filenames
+    fs.writeFile(argv.out + "/" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".js", js, function(err) {
       if (err) {
         console.warn(err);
         return;
       }
     });
-  } else {
-    _.each(templates, function(js, name) {
-      console.warn("[+] Writing " + argv.out + "/" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".js");
-      fs.writeFile(argv.out + "/" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".js", js, function(err) {
-        if (err) {
-          console.warn(err);
-          return;
-        }
-      });
-    });
-  }
+  });
 });
